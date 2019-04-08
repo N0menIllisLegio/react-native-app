@@ -36,10 +36,7 @@ class ProductCard extends React.Component {
 
         return(
             <TouchableWithoutFeedback 
-                onPress={() => this.props.navigation.navigate('Details', {
-                    id: id,
-                    product: this.props.product,
-                })}
+                onPress={() => this.props.navigation.navigate('Details', { id: id })}
                 onPressIn={()=>this.animateIn()}
                 onPressOut={()=>this.animateOut()}
             >

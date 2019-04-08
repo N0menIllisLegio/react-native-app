@@ -28,7 +28,7 @@ class ProductCartCell extends React.Component {
                 rightTitleProps={{ numberOfLines: 1 }}
                 leftAvatar={{ rounded: true, source: photoMain }}
                 rightAvatar={<MaterialIcons name='remove' size={40} color='darkred' 
-                    onPress={ () => this.props.handleRemove(id) } />}
+                    onPress={ () => this.props.handleRemove(id, amount) } />}
                 onPress={() => this.props.navigation.navigate('Details', {
                     id: id,
                     product: this.props.product,

@@ -29,10 +29,7 @@ class ProductCell extends React.Component {
                 rightTitleStyle={{fontWeight: 'bold'}}
                 rightTitleProps={{ numberOfLines: 1 }}
                 leftAvatar={{ rounded: false, source: photoMain }}
-                onPress={() => this.props.navigation.navigate('Details', {
-                    id: id,
-                    product: this.props.product,
-                })}
+                onPress={() => this.props.navigation.navigate('Details', { id: id })}
                 chevron
             />
         )

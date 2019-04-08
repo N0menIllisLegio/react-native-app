@@ -13,6 +13,8 @@ import { Header, Button, PricingCard, ThemeProvider, Input } from 'react-native-
 import Swiper from 'react-native-swiper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Modal from "react-native-modal";
+import DataController from "../components/DataController";
+import Snackbar from 'react-native-snackbar';
 
 class DetailsScreen extends React.Component {
     static navigationOptions = {
@@ -21,24 +23,24 @@ class DetailsScreen extends React.Component {
 
     state = {
         visibleModal: false,
-        price: null,
         buyingPrice: 0,
-        amount: '0',
-        product: null,
-        id: null
+        amount: '1',
+        product: null
     };
 
     componentDidMount() {
-        // this.props.navigation.getParam('id', -1)
+        const id = this.props.navigation.getParam('id', -1);
+        const product = DataController.getProduct(id);
         this.setState({
-            product: this.props.navigation.getParam('product', defProduct)
+            product: product,
+            buyingPrice: product.price
         });
     }
 
     handleAmountInput = (amount) => {
-        amount = amount === '' ? '0' : amount;
+        amount = amount === '' ? '1' : amount;
         let number = parseInt(amount, 10);
-        if (!isNaN(number) && number > -1) {
+        if (!isNaN(number) && number > 0) {
             this.setState({
                 amount: JSON.stringify(number),
                 buyingPrice: this.state.product.price * number
@@ -60,12 +62,29 @@ class DetailsScreen extends React.Component {
         let amount = this.state.amount;
         let number = parseInt(amount, 10);
         number--;
-        if (number > -1) {
+        if (number > 0) {
             this.setState({
                 amount: JSON.stringify(number),
                 buyingPrice: this.state.product.price * number
             });   
         }
+    }
+
+    handleAdding = () => {
+        DataController.addProductToCart(this.state.product.id, this.state.amount);
+
+        this.setState({
+            visibleModal: false, 
+            amount: '1', 
+            buyingPrice: this.state.product.price
+        });
+
+        Snackbar.show({
+            title: 'Added to Cart!',
+            duration: Snackbar.LENGTH_SHORT,
+            color: 'white',
+            backgroundColor: 'darkred'
+        });
     }
 
     _renderModalContent = () => (
@@ -86,11 +105,13 @@ class DetailsScreen extends React.Component {
                 <Button title='ADD' icon={<MaterialIcons name='done' color='white' size={20}/>} 
                     buttonStyle={{ backgroundColor: 'darkgreen', marginRight: 10}}
                     containerStyle={{width: 150}}
+                    onPress={ this.handleAdding }
                 />
                 <Button title='CANCEL' icon={<MaterialIcons name='clear' color='white' size={20}/>} 
                     buttonStyle={{ backgroundColor: 'darkred'}}
                     containerStyle={{width: 150}}
-                    onPress={()=> this.setState({ visibleModal: false, amount: '0', buyingPrice: 0 })}
+                    onPress={() => this.setState({ visibleModal: false, amount: '1', 
+                        buyingPrice: this.state.product.price })}
                 />
             </View>
         </View>
@@ -228,12 +249,10 @@ const styles = StyleSheet.create({
         height: undefined, 
         width: undefined
     },
-
     bottomModal: {
         justifyContent: 'flex-end',
         margin: 0,
     },
-
     modalContent: {
         backgroundColor: 'white',
         padding: 22,
