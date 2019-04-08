@@ -7,12 +7,14 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Dimensions
+  Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 
 import { Header, Input } from 'react-native-elements';
 import ProductCard from '../components/ProductCard';
 import ProductCell from '../components/ProductCell';
+
 import Swiper from 'react-native-swiper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FeatherIcons from 'react-native-vector-icons/Feather'
@@ -28,7 +30,6 @@ export default class HomeScreen extends React.Component {
     }
   };
 
-
   state = {
     searchIconColor: 'white',
     showSearch: false,
@@ -39,68 +40,83 @@ export default class HomeScreen extends React.Component {
         displayDiagonal: 5.5,
         memorySize: 32,
         batteryCapacity: 3000,
+        oS: 'Android',
+        frontalCamera: 12,
         title: 'Product1',
         info: 'Very good product! You should use it!',
         price: 200,
-        photoMain: require('../photos/180copy3.jpeg')
+        inStock: true,
+        photoMain: require('../photos/180copy3.jpeg'),
+        extraPhoto1: require('../photos/180copy3.jpeg'),
+        extraPhoto2: require('../photos/9hq.png')
       },
       {
         id: 2,
         displayDiagonal: 6.5,
         memorySize: 16,
         batteryCapacity: 2500,
+        oS: 'ios',
+        frontalCamera: 10,
         title: 'Product1',
         info: 'Very good product! You should use it!',
         price: 240,
-        photoMain: require('../photos/9hq.png')
+        inStock: false,
+        photoMain: require('../photos/9hq.png'),
+        extraPhoto1: require('../photos/180copy3.jpeg'),
+        extraPhoto2: null
       },
       {
         id: 3,
         displayDiagonal: 5.2,
         memorySize: 8,
         batteryCapacity: 2800,
+        oS: 'WindowsPhone',
+        frontalCamera: 8,
         title: 'Mac Book Pro 2016',
         info: 'Very good product! You lkdfkdsnjnj jsndjsnd ksdk ksnd kdfskdflk should use it!',
         price: 210,
-        photoMain: require('../photos/180copy3.jpeg')
+        inStock: true,
+        photoMain: require('../photos/180copy3.jpeg'),
+        extraPhoto1: null,
+        extraPhoto2: null
       },
       {
         id: 4,
         displayDiagonal: 6.1,
         memorySize: 64,
         batteryCapacity: 3500,
+        oS: 'Android',
+        frontalCamera: 9,
         title: 'Product1',
         info: 'Very good product! You should use it!',
         price: 320,
-        photoMain: require('../photos/180copy3.jpeg')
+        inStock: false,
+        photoMain: require('../photos/180copy3.jpeg'),
+        extraPhoto1: null,
+        extraPhoto2: null
       }
     ]
   }
 
   render() {
-    let productsCardsList = null;
-    let productsCellsList = null;
+    let productsCardsList = (<ActivityIndicator size='large' color='darkred' />);
+    let productsCellsList = (<ActivityIndicator size='large' color='darkred' />);
     let searchBar = null;
     let { showSearch, searchIconColor } = this.state;
 
-    if (showSearch) {
-      searchBar = (
-      <Input
-        leftIcon={ <FeatherIcons name='search' color='lightgrey' size={16}/> }
-        leftIconContainerStyle={{marginRight: 15}}
-        placeholder='Search...'
-      />);
-      searchIconColor = 'lightblue'
-    } else {
-      searchBar = (
-      <View />);
+    if (this.state.products !== null) {
+      if (showSearch) {
+        searchBar = (
+        <Input
+          leftIcon={ <FeatherIcons name='search' color='lightgrey' size={16}/> }
+          leftIconContainerStyle={{marginRight: 15}}
+          placeholder='Search...'/>);
+        searchIconColor = 'lightblue'
+      } else {
+        searchBar = ( <View />);
+        searchIconColor = 'white'
+      }
 
-      searchIconColor = 'white'
-    }
-
-    if (this.state.products === null) {
-      productsList = (<Text>Loading</Text>);
-    } else {
       productsCardsList = this.state.products.length > 0 ? (
         this.state.products.map(product => <ProductCard navigation={this.props.navigation} product={product} key={product.id}/>) 
       ) : (
@@ -119,9 +135,9 @@ export default class HomeScreen extends React.Component {
         <Header
           containerStyle={{ borderBottomWidth: 0 }}
           backgroundColor={'darkred'}
-          leftComponent={<FeatherIcons name='search' color={ searchIconColor } size={20} onPress={() => this.setState({ showSearch: !showSearch}) }/>}
+          leftComponent={<FeatherIcons name='search' color={ searchIconColor } size={25} onPress={() => this.setState({ showSearch: !showSearch}) }/>}
           centerComponent={{ text: 'PRODUCTS', style: { color: '#fff' } }}
-          rightComponent={<MaterialCommunityIcons name='cart' color='white' size={20} onPress={() => this.props.navigation.navigate('Cart')}/>}
+          rightComponent={<MaterialCommunityIcons name='cart' color='white' size={25} onPress={() => this.props.navigation.navigate('Cart')}/>}
         />
         { searchBar }
         <Swiper

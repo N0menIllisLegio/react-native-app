@@ -5,7 +5,6 @@ import {
   View
 } from 'react-native';
 import { ListItem } from 'react-native-elements'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons'
 
 class ProductCell extends React.Component {
     render(){
@@ -24,13 +23,16 @@ class ProductCell extends React.Component {
                 titleStyle={{fontWeight: 'bold'}}
                 titleProps={{ numberOfLines: 1 }}
                 topDivider={true}
-                bottomDivreact-native link react-native-fast-imageider={true}
+                bottomDivider={true}
                 subtitle={info}
                 rightTitle={ price + '$' }
                 rightTitleStyle={{fontWeight: 'bold'}}
                 rightTitleProps={{ numberOfLines: 1 }}
                 leftAvatar={{ rounded: false, source: photoMain }}
-                onPress={() => this.props.navigation.navigate('Details')}
+                onPress={() => this.props.navigation.navigate('Details', {
+                    id: id,
+                    product: this.props.product,
+                })}
                 chevron
             />
         )
