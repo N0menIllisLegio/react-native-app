@@ -14,7 +14,7 @@ import Swiper from 'react-native-swiper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Modal from "react-native-modal";
 import DataController from "../components/DataController";
-import Snackbar from 'react-native-snackbar';
+import SnackBar from 'react-native-snackbar-component'
 
 class DetailsScreen extends React.Component {
     static navigationOptions = {
@@ -25,7 +25,8 @@ class DetailsScreen extends React.Component {
         visibleModal: false,
         buyingPrice: 0,
         amount: '1',
-        product: null
+        product: null,
+        snackbarVisible: false 
     };
 
     componentDidMount() {
@@ -76,15 +77,11 @@ class DetailsScreen extends React.Component {
         this.setState({
             visibleModal: false, 
             amount: '1', 
-            buyingPrice: this.state.product.price
+            buyingPrice: this.state.product.price,
+            snackbarVisible: true
         });
 
-        Snackbar.show({
-            title: 'Added to Cart!',
-            duration: Snackbar.LENGTH_SHORT,
-            color: 'white',
-            backgroundColor: 'darkred'
-        });
+        setTimeout(() => this.setState({ snackbarVisible: false }), 2500);
     }
 
     _renderModalContent = () => (
@@ -146,8 +143,7 @@ class DetailsScreen extends React.Component {
                     centerComponent={{ text: 'DETAILS', style: { color: '#fff' } }}
                     rightComponent={<MaterialIcons name='shopping-cart' color='white' size={20} onPress={() => this.props.navigation.navigate('Cart')}/>}
                 />
-                
-                <ScrollView style={styles.contentContainer}>
+                                <ScrollView style={styles.contentContainer}>
                     <Swiper height={300} paginationStyle={{ bottom: -20 } } activeDotColor='rgba(242, 38, 19, 1)' > 
                         {swiperComponent}
                     </Swiper>
@@ -181,6 +177,8 @@ class DetailsScreen extends React.Component {
                         />
                     </ThemeProvider>
                 </ScrollView>
+                <SnackBar visible={this.state.snackbarVisible} backgroundColor='darkred'
+                textMessage={this.state.product.title + ' added to cart!'}/>
             </View>
         )
     }

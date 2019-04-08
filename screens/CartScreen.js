@@ -1,14 +1,10 @@
 import React from "react";
 import {
-    Image,
-    Platform,
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     ActivityIndicator,
-    View,
-    Dimensions
+    View
 } from 'react-native';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -150,7 +146,9 @@ class CartScreen extends React.Component {
                     product={element.product} amount={element.amount} key={element.product.id} />
                 ))
             ) : (
-                <Text>Buy somthing!!!</Text>
+                <View style={[styles.loaderContainer, styles.horizontal]}>
+                    <Text style={styles.placeholder}>Your cart is empty!</Text>
+                </View>
             );
         }
 
@@ -212,4 +210,9 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 4,
         borderColor: 'rgba(0, 0, 0, 0.1)',
     },
+    placeholder: {
+        fontSize: 20,
+        fontStyle: 'italic',
+        color: 'grey' 
+    }
 });

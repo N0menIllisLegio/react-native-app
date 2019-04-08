@@ -33,7 +33,6 @@ class ProductCard extends React.Component {
         const { title, price, photoMain, displayDiagonal, 
             memorySize, batteryCapacity, id } = this.props.product
         const width = Dimensions.get('window').width / 3 - 10;
-
         return(
             <TouchableWithoutFeedback 
                 onPress={() => this.props.navigation.navigate('Details', { id: id })}

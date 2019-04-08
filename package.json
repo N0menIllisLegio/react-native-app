@@ -1,4 +1,7 @@
 {
+  "name": "react-native-app",
+  "version": "1.0.0",
+  "description": "Laba_2",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -12,7 +15,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^1.1.0",
     "react-native-modal": "^9.0.0",
-    "react-native-snackbar": "^0.5.5",
+    "react-native-snackbar-component": "^1.1.0",
     "react-native-swiper": "^1.5.14",
     "react-native-vector-icons": "^6.4.2",
     "react-navigation": "^3.6.1"
