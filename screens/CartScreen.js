@@ -160,10 +160,10 @@ class CartScreen extends React.Component {
                     containerStyle={{ borderBottomWidth: 0 }}
                     backgroundColor={'darkred'}
                     leftComponent={<MaterialIcons name='arrow-back' color='white' 
-                        size={20} onPress={() => this.props.navigation.goBack()}/>}
+                        size={25} onPress={() => this.props.navigation.goBack()}/>}
                     centerComponent={{ text: 'CART', style: { color: '#fff' } }}
                     rightComponent={<MaterialIcons name='remove-shopping-cart' color='white' 
-                        size={20} onPress={() => this.setState({cart: []})}/>}
+                        size={25} onPress={() => this.setState({cart: []})}/>}
                 />
 
                 <ScrollView>

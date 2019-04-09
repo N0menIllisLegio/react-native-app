@@ -141,9 +141,9 @@ class DetailsScreen extends React.Component {
                 <Header
                     containerStyle={{ borderBottomWidth: 0 }}
                     backgroundColor={'darkred'}
-                    leftComponent={<MaterialIcons name='arrow-back' color='white' size={20} onPress={() => this.props.navigation.goBack() }/>}
+                    leftComponent={<MaterialIcons name='arrow-back' color='white' size={25} onPress={() => this.props.navigation.goBack() }/>}
                     centerComponent={{ text: 'DETAILS', style: { color: '#fff' } }}
-                    rightComponent={<MaterialIcons name='shopping-cart' color='white' size={20} onPress={() => this.props.navigation.navigate('Cart')}/>}
+                    rightComponent={<MaterialIcons name='shopping-cart' color='white' size={25} onPress={() => this.props.navigation.navigate('Cart')}/>}
                 />
                                 <ScrollView style={styles.contentContainer}>
                     <Swiper height={300} paginationStyle={{ bottom: -20 } } activeDotColor='rgba(242, 38, 19, 1)' > 
@@ -211,7 +211,7 @@ const defProduct = {
     title: '-',
     info: '-',
     price: 0,
-    photoMain: require('../photos/180copy3.jpeg')
+    photoMain: require('../photos/Photo_1.png')
 }
 
 const styles = StyleSheet.create({

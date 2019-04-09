@@ -7,9 +7,6 @@ class DataController {
     static Cart = [];
     
     constructor() {
-        db.count({}, function (err, count) {
-            console.log(count);
-        });
     }
 
     static getOneProduct(id, amount) {
@@ -53,9 +50,10 @@ class DataController {
         }
     }
 
-    static getAllProducts = new Promise(function(resolve, reject) {
+    static getAllProducts = () => new Promise(function(resolve, reject) {
         db.find({}, function(error, data) {
             resolve(data);
+            // resolve(storage);
         });
     })
 
@@ -70,62 +68,62 @@ export default DataController
 
 const storage = [
     {
-    _id: 1,
-    displayDiagonal: 5.5,
-    memorySize: 32,
-    batteryCapacity: 3000,
-    oS: 'Android',
-    frontalCamera: 12,
-    title: 'Product1',
-    info: 'Very good product! You should use it!',
-    price: 200.99,
-    inStock: true,
-    photoMain: require('../photos/180copy3.jpeg'),
-    extraPhoto1: require('../photos/180copy3.jpeg'),
-    extraPhoto2: require('../photos/9hq.png')
-  },
-  {
-    _id: 2,
+    _id: 5,
     displayDiagonal: 6.5,
     memorySize: 16,
-    batteryCapacity: 2500,
-    oS: 'ios',
-    frontalCamera: 10,
-    title: 'Product1',
-    info: 'Very good product! You should use it!',
-    price: 240,
-    inStock: false,
-    photoMain: require('../photos/9hq.png'),
-    extraPhoto1: require('../photos/180copy3.jpeg'),
-    extraPhoto2: null
-  },
-  {
-    _id: 3,
-    displayDiagonal: 5.2,
-    memorySize: 8,
-    batteryCapacity: 2800,
-    oS: 'WindowsPhone',
-    frontalCamera: 8,
-    title: 'Mac Book Pro 2016',
-    info: 'Very good product! You lkdfkdsnjnj jsndjsnd ksdk ksnd kdfskdflk should use it!',
-    price: 210,
-    inStock: true,
-    photoMain: require('../photos/180copy3.jpeg'),
-    extraPhoto1: null,
-    extraPhoto2: null
-  },
-  {
-    _id: 4,
-    displayDiagonal: 6.1,
-    memorySize: 64,
-    batteryCapacity: 3500,
+    batteryCapacity: 2895,
     oS: 'Android',
-    frontalCamera: 9,
-    title: 'Product1',
+    frontalCamera: 40,
+    title: 'Motorola One',
     info: 'Very good product! You should use it!',
-    price: 320,
+    price: 187.99,
+    inStock: true,
+    photoMain: require('../photos/Photo_8.jpeg'),
+    extraPhoto1: require('../photos/Photo_9.jpeg'),
+    extraPhoto2: require('../photos/Photo_10.jpeg')
+  },
+  {
+    _id: 6,
+    displayDiagonal: 6.1,
+    memorySize: 32,
+    batteryCapacity: 3000,
+    oS: 'Andorid',
+    frontalCamera: 9,
+    title: 'Redmi Go',
+    info: 'Very good product! You should use it!',
+    price: 322,
     inStock: false,
-    photoMain: require('../photos/180copy3.jpeg'),
-    extraPhoto1: null,
+    photoMain: require('../photos/Photo_10.jpeg'),
+    extraPhoto1: require('../photos/Photo_11.jpeg'),
     extraPhoto2: null
-  }]
+  },
+  {
+    _id: 7,
+    displayDiagonal: 5.8,
+    memorySize: 32,
+    batteryCapacity: 3500,
+    oS: 'ios',
+    frontalCamera: 12,
+    title: 'Apple iPhone 6',
+    info: 'Very good product! You lkdfkdsnjnj jsndjsnd ksdk ksnd kdfskdflk should use it!',
+    price: 600,
+    inStock: true,
+    photoMain: require('../photos/Photo_12.jpeg'),
+    extraPhoto1: require('../photos/Photo_13.jpeg'),
+    extraPhoto2: null
+  },
+  {
+    _id: 8,
+    displayDiagonal: 6.3,
+    memorySize: 16,
+    batteryCapacity: 4000,
+    oS: 'Android',
+    frontalCamera: 15,
+    title: 'Samsung Galaxy S8',
+    info: 'Very good product! You should use it!',
+    price: 545.99,
+    inStock: false,
+    photoMain: require('../photos/Photo_14.jpeg'),
+    extraPhoto1: require('../photos/Photo_15.jpeg'),
+    extraPhoto2: require('../photos/Photo_16.jpeg')
+}]

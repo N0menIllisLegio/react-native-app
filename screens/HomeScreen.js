@@ -5,6 +5,7 @@ import {
   Text,
   View,
   ActivityIndicator,
+  RefreshControl
 } from 'react-native';
 
 import { Header, Input } from 'react-native-elements';
@@ -24,19 +25,19 @@ export default class HomeScreen extends React.Component {
 
   doSearch(searchFor) {
     let searchedProducts = [];
-    console.log('SEARCH', searchFor);
+    searchFor = searchFor.toLowerCase();
 
     this.state.products.forEach(product => {
 
-      let title = product.title.includes(searchFor);
-      let info = product.info.includes(searchFor);
-      let oS = product.oS.includes(searchFor);
+      let title = product.title.toLowerCase().includes(searchFor);
+      let info = product.info.toLowerCase().includes(searchFor);
+      let oS = product.oS.toLowerCase().includes(searchFor);
 
-      let price = JSON.stringify(product.price).includes(searchFor);
-      let displayDiagonal = JSON.stringify(product.displayDiagonal).includes(searchFor);
-      let memorySize = JSON.stringify(product.memorySize).includes(searchFor);
-      let batteryCapacity = JSON.stringify(product.batteryCapacity).includes(searchFor);
-      let frontalCamera = JSON.stringify(product.frontalCamera).includes(searchFor);
+      let price = JSON.stringify(product.price).toLowerCase().includes(searchFor);
+      let displayDiagonal = JSON.stringify(product.displayDiagonal).toLowerCase().includes(searchFor);
+      let memorySize = JSON.stringify(product.memorySize).toLowerCase().includes(searchFor);
+      let batteryCapacity = JSON.stringify(product.batteryCapacity).toLowerCase().includes(searchFor);
+      let frontalCamera = JSON.stringify(product.frontalCamera).toLowerCase().includes(searchFor);
       
       if (title || info || oS || price || displayDiagonal || memorySize || batteryCapacity || frontalCamera) {
         searchedProducts.push(product);
@@ -48,16 +49,36 @@ export default class HomeScreen extends React.Component {
     })
   }
 
+  refresh = () => {
+    this.setState({
+      searchIconColor: 'white',
+      showSearch: false,
+      search: '',
+      products: null,
+      displayedProducts: null,
+      refreshing: true
+    });
+
+    DataController.getAllProducts()
+      .then(response => {
+        this.setState({
+          products: response,
+          displayedProducts: [...response],
+          refreshing: false
+        })
+    });
+  }
+
 
   updateSearch = search => {  
-      this.setState({ search });
-      if (search.length > 2) {
-        this.doSearch(search);
-      } else {
-        this.setState({
-          displayedProducts: [...this.state.products]
-        })
-      }
+    this.setState({ search });
+    if (search.length > 2) {
+      this.doSearch(search);
+    } else {
+      this.setState({
+        displayedProducts: [...this.state.products]
+      })
+    }
   };
 
   state = {
@@ -65,12 +86,13 @@ export default class HomeScreen extends React.Component {
     showSearch: false,
     search: '',
     products: null,
-    displayedProducts: null
+    displayedProducts: null,
+    refreshing: false
   }
 
   componentDidMount() {
     // let dc = new DataController();
-    DataController.getAllProducts
+    DataController.getAllProducts()
       .then(response => {
         this.setState({
           products: response,
@@ -134,13 +156,13 @@ export default class HomeScreen extends React.Component {
           showsPagination={false}
           loop={false}
         >
-          <ScrollView>
+          <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={ this.refresh }/>}>
             <View style={ styles.contentContainer }>
               { productsCardsList }
             </View>
           </ScrollView>
           
-          <ScrollView>
+          <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={ this.refresh }/>}>
             { productsCellsList }
           </ScrollView>
         </Swiper>

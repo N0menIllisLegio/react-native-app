@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gadfly.MyFirstReactNativeApp"
+    },
+    "android": {
+      "package": "com.gadfly.MyFirstReactNativeApp"
     }
   }
 }
