@@ -31,11 +31,11 @@ class ProductCard extends React.Component {
 
     render() {
         const { title, price, photoMain, displayDiagonal, 
-            memorySize, batteryCapacity, id } = this.props.product
+            memorySize, batteryCapacity, _id } = this.props.product
         const width = Dimensions.get('window').width / 3 - 10;
         return(
             <TouchableWithoutFeedback 
-                onPress={() => this.props.navigation.navigate('Details', { id: id })}
+                onPress={() => this.props.navigation.navigate('Details', { id: _id })}
                 onPressIn={()=>this.animateIn()}
                 onPressOut={()=>this.animateOut()}
             >

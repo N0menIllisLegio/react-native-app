@@ -9,7 +9,7 @@ import { ListItem } from 'react-native-elements'
 class ProductCell extends React.Component {
     render(){
         const { title, price, displayDiagonal, 
-            memorySize, batteryCapacity, id, photoMain } = this.props.product;
+            memorySize, batteryCapacity, _id, photoMain } = this.props.product;
         let info = (<View>
             <Text numberOfLines={1} style={styles.template}>Display: <Text style={styles.info}>{displayDiagonal}</Text>"</Text>
             <Text numberOfLines={1} style={styles.template}>Memory: <Text style={styles.info}>{memorySize}</Text> Gb</Text>
@@ -18,7 +18,7 @@ class ProductCell extends React.Component {
 
         return(
             <ListItem
-                key={id}
+                key={_id}
                 title={title}
                 titleStyle={{fontWeight: 'bold'}}
                 titleProps={{ numberOfLines: 1 }}
@@ -29,7 +29,7 @@ class ProductCell extends React.Component {
                 rightTitleStyle={{fontWeight: 'bold'}}
                 rightTitleProps={{ numberOfLines: 1 }}
                 leftAvatar={{ rounded: false, source: photoMain }}
-                onPress={() => this.props.navigation.navigate('Details', { id: id })}
+                onPress={() => this.props.navigation.navigate('Details', { id: _id })}
                 chevron
             />
         )

@@ -28,8 +28,10 @@ class CartScreen extends React.Component {
     };
 
     componentDidMount() {
-        this.setState({
-            cart: DataController.getCart()
+        DataController.getCart().then( response => {
+            this.setState({
+                cart: response
+            })
         })
     }
 
@@ -78,10 +80,10 @@ class CartScreen extends React.Component {
         let amount = parseInt(this.state.amount, 10);
 
         if (amount === this.state.maxAmount) {
-            result = this.state.cart.filter(element => element.product.id !== this.state.removingID);
+            result = this.state.cart.filter(element => element.product._id !== this.state.removingID);
         } else {
             result = this.state.cart.map(element => {
-                if (element.product.id == this.state.removingID) {
+                if (element.product._id == this.state.removingID) {
                     element.amount = element.amount - amount;
                 }
                 return element;
@@ -129,7 +131,7 @@ class CartScreen extends React.Component {
 
     componentWillUnmount() {
         let updCart = [];
-        this.state.cart.forEach(element => updCart.push({ id: element.product.id, amount: element.amount }))
+        this.state.cart.forEach(element => updCart.push({ id: element.product._id, amount: element.amount }))
         DataController.Cart = updCart;
     }
 
@@ -143,7 +145,7 @@ class CartScreen extends React.Component {
                 this.state.cart.map(element => (
                     <ProductCartCell navigation={this.props.navigation} 
                     handleRemove={this.handleRemoveProduct}
-                    product={element.product} amount={element.amount} key={element.product.id} />
+                    product={element.product} amount={element.amount} key={element.product._id} />
                 ))
             ) : (
                 <View style={[styles.loaderContainer, styles.horizontal]}>

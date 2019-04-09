@@ -31,11 +31,13 @@ class DetailsScreen extends React.Component {
 
     componentDidMount() {
         const id = this.props.navigation.getParam('id', -1);
-        const product = DataController.getProduct(id);
-        this.setState({
-            product: product,
-            buyingPrice: product.price
-        });
+        DataController.getProduct(id).then(
+            response =>
+            this.setState({
+                product: response,
+                buyingPrice: response.price
+            })
+        );
     }
 
     handleAmountInput = (amount) => {
@@ -72,7 +74,7 @@ class DetailsScreen extends React.Component {
     }
 
     handleAdding = () => {
-        DataController.addProductToCart(this.state.product.id, this.state.amount);
+        DataController.addProductToCart(this.state.product._id, this.state.amount);
 
         this.setState({
             visibleModal: false, 
@@ -200,7 +202,7 @@ class DetailsScreen extends React.Component {
 export default DetailsScreen;
 
 const defProduct = {
-    id: -1,
+    _id: -1,
     displayDiagonal: 0,
     memorySize: 0,
     batteryCapacity: 0,

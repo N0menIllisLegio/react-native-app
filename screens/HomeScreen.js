@@ -1,13 +1,9 @@
 import React from 'react';
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
-  Dimensions,
   ActivityIndicator,
 } from 'react-native';
 
@@ -20,59 +16,106 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FeatherIcons from 'react-native-vector-icons/Feather'
 import DataController from '../components/DataController';
 
+
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  updateSearch = search => {
-    if (search.length > 2) {
+  doSearch(searchFor) {
+    let searchedProducts = [];
+    console.log('SEARCH', searchFor);
+
+    this.state.products.forEach(product => {
+
+      let title = product.title.includes(searchFor);
+      let info = product.info.includes(searchFor);
+      let oS = product.oS.includes(searchFor);
+
+      let price = JSON.stringify(product.price).includes(searchFor);
+      let displayDiagonal = JSON.stringify(product.displayDiagonal).includes(searchFor);
+      let memorySize = JSON.stringify(product.memorySize).includes(searchFor);
+      let batteryCapacity = JSON.stringify(product.batteryCapacity).includes(searchFor);
+      let frontalCamera = JSON.stringify(product.frontalCamera).includes(searchFor);
+      
+      if (title || info || oS || price || displayDiagonal || memorySize || batteryCapacity || frontalCamera) {
+        searchedProducts.push(product);
+      }
+    });
+
+    this.setState({
+      displayedProducts: searchedProducts
+    })
+  }
+
+
+  updateSearch = search => {  
       this.setState({ search });
-    }
+      if (search.length > 2) {
+        this.doSearch(search);
+      } else {
+        this.setState({
+          displayedProducts: [...this.state.products]
+        })
+      }
   };
 
   state = {
     searchIconColor: 'white',
     showSearch: false,
     search: '',
-    products: null
+    products: null,
+    displayedProducts: null
   }
 
   componentDidMount() {
-    this.setState({
-      products: DataController.getAllProducts()
-    })
+    // let dc = new DataController();
+    DataController.getAllProducts
+      .then(response => {
+        this.setState({
+          products: response,
+          displayedProducts: [...response]
+        })
+    });
   }
 
   render() {
-    let productsCardsList = (<ActivityIndicator size='large' color='darkred' />);
-    let productsCellsList = (<ActivityIndicator size='large' color='darkred' />);
+    let productsCardsList = (<View style={[styles.loaderContainer, styles.horizontal]}><ActivityIndicator size='large' color='darkred' /></View> );
+    let productsCellsList = productsCardsList;
     let searchBar = null;
     let { showSearch, searchIconColor } = this.state;
 
-    if (this.state.products !== null) {
+    if (this.state.displayedProducts !== null) {
       if (showSearch) {
         searchBar = (
         <Input
           leftIcon={ <FeatherIcons name='search' color='lightgrey' size={16}/> }
           leftIconContainerStyle={{marginRight: 15}}
-          placeholder='Search...'/>);
+          containerStyle={{ margin: 5, paddingRight: 20, marginBottom: 10 }}
+          placeholder='Search...'
+          value={this.state.search}
+          onChangeText={(text) => this.updateSearch(text)}
+        />);
         searchIconColor = 'lightblue'
       } else {
         searchBar = ( <View />);
         searchIconColor = 'white'
       }
 
-      productsCardsList = this.state.products.length > 0 ? (
-        this.state.products.map(product => <ProductCard navigation={this.props.navigation} product={product} key={product.id}/>) 
+      productsCardsList = this.state.displayedProducts.length > 0 ? (
+        this.state.displayedProducts.map(product => <ProductCard navigation={this.props.navigation} product={product} key={product._id}/>) 
       ) : (
-        <Text>Nothing to display!</Text>
+        <View style={[styles.loaderContainer, styles.horizontal]}>
+            <Text style={styles.placeholder}>Nothing to display!</Text>
+        </View>
       );
 
-      productsCellsList = this.state.products.length > 0 ? (
-        this.state.products.map(product => <ProductCell navigation={this.props.navigation} product={product} key={product.id}/>) 
+      productsCellsList = this.state.displayedProducts.length > 0 ? (
+        this.state.displayedProducts.map(product => <ProductCell navigation={this.props.navigation} product={product} key={product._id}/>) 
       ) : (
-        <Text>Nothing to display!</Text>
+        <View style={[styles.loaderContainer, styles.horizontal]}>
+          <Text style={styles.placeholder}>Nothing to display!</Text>
+        </View>
       );
     }
     
@@ -127,5 +170,19 @@ const styles = StyleSheet.create({
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
     textAlign: 'center',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  horizontal: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      padding: 10
+  },
+  placeholder: {
+    fontSize: 20,
+    fontStyle: 'italic',
+    color: 'grey' 
   }
 });

@@ -11,12 +11,12 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 class ProductCartCell extends React.Component {
 
     render(){
-        const { title, price, id, photoMain } = this.props.product;
+        const { title, price, _id, photoMain } = this.props.product;
         const amount = this.props.amount;
 
         return(
             <ListItem
-                key={id}
+                key={_id}
                 title={title}
                 titleStyle={{fontWeight: 'bold'}}
                 titleProps={{ numberOfLines: 4 }}
@@ -28,9 +28,9 @@ class ProductCartCell extends React.Component {
                 rightTitleProps={{ numberOfLines: 1 }}
                 leftAvatar={{ rounded: true, source: photoMain }}
                 rightAvatar={<MaterialIcons name='remove' size={40} color='darkred' 
-                    onPress={ () => this.props.handleRemove(id, amount) } />}
+                    onPress={ () => this.props.handleRemove(_id, amount) } />}
                 onPress={() => this.props.navigation.navigate('Details', {
-                    id: id,
+                    id: _id,
                     product: this.props.product,
                 })}
             />

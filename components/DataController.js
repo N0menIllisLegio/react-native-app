@@ -1,47 +1,38 @@
-const ProductSchema = {
-    name: 'Product',
-    properties: {
-        id: 'int',
-        displayDiagonal: 'float',
-        memorySize: 'int',
-        batteryCapacity: 'int',
-        oS: 'string',
-        frontalCamera: 'int',
-        title: 'string',
-        info: 'string',
-        price: 'float',
-        inStock: 'bool',
-        photoMain: 'string',
-        extraPhoto1: 'string?',
-        extraPhoto2: 'string?'
-    }
-};
 
-import firebase from 'firebase'
-import { SQLite } from 'expo';
-import { FileSystem } from 'expo';
+var Datastore = require('react-native-local-mongodb')
+  , db = new Datastore({ filename: 'ProductsDB', autoload: true });
+
 
 class DataController {
-    static Cart = [ ];
+    static Cart = [];
     
     constructor() {
-        SQLite.openDatabase('Expo.db');
-        console.log(FileSystem.getInfoAsync('/SQLite/Expo.db'));
+        db.count({}, function (err, count) {
+            console.log(count);
+        });
     }
 
+    static getOneProduct(id, amount) {
+      return new Promise((resolve) => {
+        db.findOneAsync({_id: id}).then( response =>
+            resolve({
+                product: response,
+                amount: amount
+            })
+        )
+      });
+    }
 
-    static getCart() {
-        let returnValue = [];
-        // console.log(DataController.Cart);
+    static getCart = () => new Promise(function(resolve, reject) {
+        let promises = [];
+        
         DataController.Cart.forEach(element => {
-            returnValue.push({
-                product: DataController.getProduct(element.id),
-                amount: element.amount
-            });
+            promises.push(DataController.getOneProduct(element.id, element.amount));
         })
-
-        return returnValue;
-    }
+        
+        Promise.all(promises)
+            .then((results) => resolve(results))
+    })
 
     static addProductToCart(id, amountStr) {
         let amount = parseInt(amountStr, 10);
@@ -60,23 +51,26 @@ class DataController {
                 amount: amount
             });
         }
-
-        // console.log(DataController.Cart);
     }
 
-    static getAllProducts() {
-        return storage;
-    }
+    static getAllProducts = new Promise(function(resolve, reject) {
+        db.find({}, function(error, data) {
+            resolve(data);
+        });
+    })
 
-    static getProduct(id) {
-        return storage.find(product => product.id == id);
-    }
+    static getProduct = (id) => new Promise(function(resolve, reject) {
+        db.findOne({_id: id}, function(error, data) {
+            resolve(data);
+        });
+    })
 }
 
 export default DataController
 
-const storage = [{
-    id: 1,
+const storage = [
+    {
+    _id: 1,
     displayDiagonal: 5.5,
     memorySize: 32,
     batteryCapacity: 3000,
@@ -91,7 +85,7 @@ const storage = [{
     extraPhoto2: require('../photos/9hq.png')
   },
   {
-    id: 2,
+    _id: 2,
     displayDiagonal: 6.5,
     memorySize: 16,
     batteryCapacity: 2500,
@@ -106,7 +100,7 @@ const storage = [{
     extraPhoto2: null
   },
   {
-    id: 3,
+    _id: 3,
     displayDiagonal: 5.2,
     memorySize: 8,
     batteryCapacity: 2800,
@@ -121,7 +115,7 @@ const storage = [{
     extraPhoto2: null
   },
   {
-    id: 4,
+    _id: 4,
     displayDiagonal: 6.1,
     memorySize: 64,
     batteryCapacity: 3500,
