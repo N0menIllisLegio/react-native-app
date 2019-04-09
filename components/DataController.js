@@ -1,7 +1,35 @@
+const ProductSchema = {
+    name: 'Product',
+    properties: {
+        id: 'int',
+        displayDiagonal: 'float',
+        memorySize: 'int',
+        batteryCapacity: 'int',
+        oS: 'string',
+        frontalCamera: 'int',
+        title: 'string',
+        info: 'string',
+        price: 'float',
+        inStock: 'bool',
+        photoMain: 'string',
+        extraPhoto1: 'string?',
+        extraPhoto2: 'string?'
+    }
+};
+
+import firebase from 'firebase'
+import { SQLite } from 'expo';
+import { FileSystem } from 'expo';
 
 class DataController {
     static Cart = [ ];
     
+    constructor() {
+        SQLite.openDatabase('Expo.db');
+        console.log(FileSystem.getInfoAsync('/SQLite/Expo.db'));
+    }
+
+
     static getCart() {
         let returnValue = [];
         // console.log(DataController.Cart);
@@ -56,7 +84,7 @@ const storage = [{
     frontalCamera: 12,
     title: 'Product1',
     info: 'Very good product! You should use it!',
-    price: 200,
+    price: 200.99,
     inStock: true,
     photoMain: require('../photos/180copy3.jpeg'),
     extraPhoto1: require('../photos/180copy3.jpeg'),

@@ -1,7 +1,5 @@
 {
   "name": "react-native-app",
-  "version": "1.0.0",
-  "description": "Laba_2",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -11,10 +9,12 @@
   },
   "dependencies": {
     "expo": "^32.0.0",
+    "firebase": "^5.9.3",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^1.1.0",
     "react-native-modal": "^9.0.0",
+    "react-native-navigation": "^2.17.0",
     "react-native-snackbar-component": "^1.1.0",
     "react-native-swiper": "^1.5.14",
     "react-native-vector-icons": "^6.4.2",
