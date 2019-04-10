@@ -91,7 +91,7 @@ export default class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    // let dc = new DataController();
+    let dc = new DataController();
     DataController.getAllProducts()
       .then(response => {
         this.setState({
