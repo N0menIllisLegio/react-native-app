@@ -13,11 +13,16 @@ class DataController {
     	// db.insert(storage[4], function(er, n){});
     	// db.insert(storage[5], function(er, n){});
     	// db.insert(storage[6], function(er, n){});
-    	// db.insert(storage[7], function(er, n){});
+      // db.insert(storage[7], function(er, n){});
 
-    	// db.find({},function(er, data){
-    	// 	console.log('OUT', data);
-    	// })
+      db.update({ _id: 1 }, { $set: { inStock: 1 } }, { multi: true }, function (err, numReplaced) { });
+      db.update({ _id: 2 }, { $set: { inStock: 0 } }, { multi: true }, function (err, numReplaced) { });
+      db.update({ _id: 3 }, { $set: { inStock: 4 } }, { multi: true }, function (err, numReplaced) { });
+      db.update({ _id: 4 }, { $set: { inStock: 0 } }, { multi: true }, function (err, numReplaced) { });
+      db.update({ _id: 5 }, { $set: { inStock: 2 } }, { multi: true }, function (err, numReplaced) { });
+      db.update({ _id: 6 }, { $set: { inStock: 0 } }, { multi: true }, function (err, numReplaced) { });
+      db.update({ _id: 7 }, { $set: { inStock: 9 } }, { multi: true }, function (err, numReplaced) { });
+      db.update({ _id: 8 }, { $set: { inStock: 0 } }, { multi: true }, function (err, numReplaced) { });
     }
 
     static getOneProduct(id, amount) {
@@ -42,9 +47,12 @@ class DataController {
             .then((results) => resolve(results))
     })
 
-    static addProductToCart(id, amountStr) {
+    static addProductToCart(product, amountStr) {
+        let id = product._id
         let amount = parseInt(amountStr, 10);
         let elemExists = false;
+        db.update({ _id: id }, { $set: { inStock: product.inStock - amount } }, { multi: true }, function (err, numReplaced) {
+        });
 
         DataController.Cart.forEach(element => {
             if (element.id == id) {
@@ -64,7 +72,6 @@ class DataController {
     static getAllProducts = () => new Promise(function(resolve, reject) {
         db.find({}, function(error, data) {
             resolve(data);
-            // resolve(storage);
         });
     })
 
@@ -72,6 +79,14 @@ class DataController {
         db.findOne({_id: id}, function(error, data) {
             resolve(data);
         });
+    })
+
+    static updateStock = (id, amount) => new Promise(function(resolve, reject) {
+      db.findOne({_id: id}, function(error, data) {
+        db.update({ _id: id }, { $set: { inStock: data.inStock + amount } }, { multi: true }, function (err, numReplaced) {
+          resolve(numReplaced);
+        });
+      });
     })
 }
 
@@ -88,7 +103,7 @@ const storage = [
 	    title: 'Motorola',
 	    info: 'Very good product! You should use it!',
 	    price: 300,
-	    inStock: true,
+	    inStock: 1,
 	    photoMain: require('../photos/Photo_1.png'),
 	    extraPhoto1: require('../photos/Photo_2.jpeg'),
 	    extraPhoto2: require('../photos/Photo_3.jpeg')
@@ -103,7 +118,7 @@ const storage = [
 	    title: 'Nokia',
 	    info: 'Very good product! You should use it!',
 	    price: 450,
-	    inStock: false,
+	    inStock: 0,
 	    photoMain: require('../photos/Photo_4.jpeg'),
 	    extraPhoto1: require('../photos/Photo_5.jpeg'),
 	    extraPhoto2: null
@@ -118,7 +133,7 @@ const storage = [
 	    title: 'Apple iPhone 4s',
 	    info: 'Very good product! You lkdfkdsnjnj jsndjsnd ksdk ksnd kdfskdflk should use it!',
 	    price: 600,
-	    inStock: true,
+	    inStock: 4,
 	    photoMain: require('../photos/Photo_6.jpeg'),
 	    extraPhoto1: require('../photos/Photo_7.jpeg'),
 	    extraPhoto2: null
@@ -133,7 +148,7 @@ const storage = [
 	    title: 'Samsung Galaxy Note',
 	    info: 'Very good product! You should use it!',
 	    price: 750,
-	    inStock: false,
+	    inStock: 0,
 	    photoMain: require('../photos/Photo_8.jpeg'),
 	    extraPhoto1: require('../photos/Photo_9.jpeg'),
 	    extraPhoto2: require('../photos/Photo_10.jpeg')
@@ -148,7 +163,7 @@ const storage = [
     title: 'Motorola One',
     info: 'Very good product! You should use it!',
     price: 187.99,
-    inStock: true,
+    inStock: 3,
     photoMain: require('../photos/Photo_8.jpeg'),
     extraPhoto1: require('../photos/Photo_9.jpeg'),
     extraPhoto2: require('../photos/Photo_10.jpeg')
@@ -178,7 +193,7 @@ const storage = [
     title: 'Apple iPhone 6',
     info: 'Very good product! You lkdfkdsnjnj jsndjsnd ksdk ksnd kdfskdflk should use it!',
     price: 600,
-    inStock: true,
+    inStock: 0,
     photoMain: require('../photos/Photo_12.jpeg'),
     extraPhoto1: require('../photos/Photo_13.jpeg'),
     extraPhoto2: null
@@ -193,7 +208,7 @@ const storage = [
     title: 'Samsung Galaxy S8',
     info: 'Very good product! You should use it!',
     price: 545.99,
-    inStock: false,
+    inStock: 5,
     photoMain: require('../photos/Photo_14.jpeg'),
     extraPhoto1: require('../photos/Photo_15.jpeg'),
     extraPhoto2: require('../photos/Photo_16.jpeg')

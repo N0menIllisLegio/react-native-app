@@ -29,6 +29,18 @@ class DetailsScreen extends React.Component {
         snackbarVisible: false 
     };
 
+    reloadProduct = (id) => {
+        if (this.state.product !== null && this.state.product._id == id)
+            DataController.getProduct(id).then(
+                response => {
+                    this.setState({
+                        product: response,
+                        buyingPrice: response.price
+                    })
+                }
+            );
+    }
+
     componentDidMount() {
         const id = this.props.navigation.getParam('id', -1);
         DataController.getProduct(id).then(
@@ -43,7 +55,7 @@ class DetailsScreen extends React.Component {
     handleAmountInput = (amount) => {
         amount = amount === '' ? '1' : amount;
         let number = parseInt(amount, 10);
-        if (!isNaN(number) && number > 0) {
+        if (!isNaN(number) && number > 0 && number <= this.state.product.inStock) {
             this.setState({
                 amount: JSON.stringify(number),
                 buyingPrice: this.state.product.price * number
@@ -55,10 +67,11 @@ class DetailsScreen extends React.Component {
         let amount = this.state.amount;
         let number = parseInt(amount, 10);
         number++;
-        this.setState({
-            amount: JSON.stringify(number),
-            buyingPrice: this.state.product.price * number
-        });
+        if (number <= this.state.product.inStock)
+            this.setState({
+                amount: JSON.stringify(number),
+                buyingPrice: this.state.product.price * number
+            });
     }
 
     handleAmountDecrease = () => {
@@ -74,12 +87,16 @@ class DetailsScreen extends React.Component {
     }
 
     handleAdding = () => {
-        DataController.addProductToCart(this.state.product._id, this.state.amount);
-
+        DataController.addProductToCart(this.state.product, this.state.amount);
+        let tProduct = this.state.product
+        let amount = parseInt(this.state.amount, 10);
+        tProduct.inStock = this.state.product.inStock -  amount;
+        
         this.setState({
             visibleModal: false, 
             amount: '1', 
             buyingPrice: this.state.product.price,
+            product: tProduct,
             snackbarVisible: true
         });
 
@@ -121,8 +138,8 @@ class DetailsScreen extends React.Component {
     }
 
     _renderDetails = (product) => {
-        const infoColor = product.inStock ? 'green' : 'red';
-        const stock = product.inStock ? 'In Stock' : 'Out Of Stock';
+        const infoColor = product.inStock > 0 ? 'green' : 'red';
+        const stock = product.inStock > 0 ? 'In Stock' : 'Out Of Stock';
         const resize = 'contain';
         let swiperComponent = [(<Image key={'photo1'} resizeMode={resize} 
             style={styles.slide} source={product.photoMain} />)];
@@ -135,7 +152,9 @@ class DetailsScreen extends React.Component {
                 style={styles.slide} source={product.extraPhoto2} />);
         }
 
-        theme.Button.disabled = !product.inStock;
+        
+        theme.Button.disabled = !(product.inStock > 0);
+
 
         return(<View style={styles.container}>
                 <Header
@@ -143,7 +162,9 @@ class DetailsScreen extends React.Component {
                     backgroundColor={'darkred'}
                     leftComponent={<MaterialIcons name='arrow-back' color='white' size={25} onPress={() => this.props.navigation.goBack() }/>}
                     centerComponent={{ text: 'DETAILS', style: { color: '#fff' } }}
-                    rightComponent={<MaterialIcons name='shopping-cart' color='white' size={25} onPress={() => this.props.navigation.navigate('Cart')}/>}
+                    rightComponent={<MaterialIcons name='shopping-cart' color='white' 
+                    size={25} onPress={() => this.props.navigation.navigate('Cart', {
+                        reloadProduct: this.reloadProduct})}/>}
                 />
                                 <ScrollView style={styles.contentContainer}>
                     <Swiper height={300} paginationStyle={{ bottom: -20 } } activeDotColor='rgba(242, 38, 19, 1)' > 
@@ -160,6 +181,7 @@ class DetailsScreen extends React.Component {
                         <ProductDetailCell value={product.oS} iconId={2}/> 
                         <ProductDetailCell value={product.memorySize} iconId={3}/> 
                         <ProductDetailCell value={product.frontalCamera} iconId={4}/> 
+                        <ProductDetailCell value={product.inStock} iconId={5}/> 
                     </View>
 
                     <Modal isVisible={ this.state.visibleModal } 
@@ -187,6 +209,7 @@ class DetailsScreen extends React.Component {
     
     render() {
         const { product } = this.state; 
+
         let displayComponent = product !== null ? (
             this._renderDetails(product)
         ) : (
@@ -200,19 +223,6 @@ class DetailsScreen extends React.Component {
 }
 
 export default DetailsScreen;
-
-const defProduct = {
-    _id: -1,
-    displayDiagonal: 0,
-    memorySize: 0,
-    batteryCapacity: 0,
-    oS: '-',
-    frontalCamera: 0,
-    title: '-',
-    info: '-',
-    price: 0,
-    photoMain: require('../photos/Photo_1.png')
-}
 
 const styles = StyleSheet.create({
     container: {

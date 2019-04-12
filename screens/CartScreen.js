@@ -19,8 +19,10 @@ class CartScreen extends React.Component {
         maxAmount: 1,
         amount: '1',
         removingID: null,
+        updated: true,
 
-        cart: null
+        cart: null,
+        reloadProduct: null
     }
 
     static navigationOptions = {
@@ -30,9 +32,12 @@ class CartScreen extends React.Component {
     componentDidMount() {
         DataController.getCart().then( response => {
             this.setState({
-                cart: response
+                cart: response,
+                reloadProduct: this.props.navigation.getParam('reloadProduct', null)
             })
         })
+
+
     }
 
     handleRemoveProduct = (id, productAmount) => {       
@@ -76,6 +81,10 @@ class CartScreen extends React.Component {
     }
 
     handleRemoving = () => {
+        this.setState({
+            updated: false
+        })
+
         let result = null;
         let amount = parseInt(this.state.amount, 10);
 
@@ -89,19 +98,25 @@ class CartScreen extends React.Component {
                 return element;
             })
         }
-        
 
-        this.setState({
-            cart: result,
-            visibleModal: false, 
-            amount: '1', 
-            maxAmount: 1,
-            removingID: null
+        DataController.updateStock(this.state.removingID, amount).then(response => {
+            if (this.state.reloadProduct !== null) {
+                this.state.reloadProduct(this.state.removingID);
+            }
+
+            this.setState({
+                cart: result,
+                visibleModal: false, 
+                amount: '1', 
+                maxAmount: 1,
+                removingID: null,
+                updated: true
+            });
         });
     }
 
-    _renderModalContent = () => (
-        <View style={styles.modalContent}>
+    _renderModalContent = () => {
+    const content = this.state.updated ? (<View style={styles.modalContent}>
             <Text style={{ fontSize: 20, marginTop: 20 }}>Remove:</Text>
             <View style={{ flexDirection: 'row', marginBottom: 40, alignItems: 'center', marginTop: 20, marginRight: 40, marginLeft: 40}}>
                 <Button type='clear' icon={<MaterialIcons name='navigate-before' size={40} color='darkred'/>} 
@@ -127,7 +142,16 @@ class CartScreen extends React.Component {
                 />
             </View>
         </View>
-    );
+        ) : (
+            <View style={styles.modalContent}>
+                <View style={[styles.loaderContainer, styles.horizontal]}>
+                    <ActivityIndicator size='large' color='darkred'/>
+                </View>
+            </View>
+        );
+
+    return (<View>{ content }</View>)
+    }
 
     componentWillUnmount() {
         let updCart = [];

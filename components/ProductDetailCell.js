@@ -55,6 +55,11 @@ const icons = [
         icon: (<MaterialIcons name='camera' size={20} color='lightgrey'/>),
         stat: ' MP'
     },
+    {
+        title: 'Products in stock:',
+        icon: (<MaterialIcons name='shopping-cart' size={20} color='lightgrey'/>),
+        stat: ' count'
+    },
 ]
 
 //OS
