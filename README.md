@@ -2,25 +2,25 @@
 Store of mobile phones.
 
 ## Screenshots
-![Alt text](../images/Loading.jpg?raw=true)
+<img src="../images/Loading.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/FilledProducts.jpg?raw=true =200x400)
+<img src="../images/FilledProducts.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/Filter.jpg?raw=true)
+<img src="../images/Filter.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/Details.jpg?raw=true)
+<img src="../images/Details.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/Details2.jpg?raw=true)
+<img src="../images/Details2.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/Buying.jpg?raw=true)
+<img src="../images/Buying.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/Snackbar.jpg?raw=true)
+<img src="../images/Snackbar.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/FilledCart.jpg?raw=true)
+<img src="../images/FilledCart.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/EmptyCart.jpg?raw=true)
+<img src="../images/EmptyCart.jpg?raw=true" width="200" height="400">
 
-![Alt text](../images/EmptyProducts.jpg?raw=true)
+<img src="../images/EmptyProducts.jpg?raw=true" width="200" height="400">
 
 ## Building
 
