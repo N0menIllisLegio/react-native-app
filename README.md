@@ -2,25 +2,15 @@
 Store of mobile phones.
 
 ## Screenshots
-<img src="../images/Loading.jpg?raw=true" width="200" height="400">
+<img src="../images/Loading.jpg?raw=true" width="250" height="400"> <img src="../images/FilledProducts.jpg?raw=true" width="250" height="400">
 
-<img src="../images/FilledProducts.jpg?raw=true" width="200" height="400">
+<img src="../images/Filter.jpg?raw=true" width="250" height="400"> <img src="../images/Details.jpg?raw=true" width="250" height="400">
 
-<img src="../images/Filter.jpg?raw=true" width="200" height="400">
+<img src="../images/Details2.jpg?raw=true" width="250" height="400"> <img src="../images/Buying.jpg?raw=true" width="250" height="400">
 
-<img src="../images/Details.jpg?raw=true" width="200" height="400">
+<img src="../images/Snackbar.jpg?raw=true" width="250" height="400"> <img src="../images/FilledCart.jpg?raw=true" width="250" height="400">
 
-<img src="../images/Details2.jpg?raw=true" width="200" height="400">
-
-<img src="../images/Buying.jpg?raw=true" width="200" height="400">
-
-<img src="../images/Snackbar.jpg?raw=true" width="200" height="400">
-
-<img src="../images/FilledCart.jpg?raw=true" width="200" height="400">
-
-<img src="../images/EmptyCart.jpg?raw=true" width="200" height="400">
-
-<img src="../images/EmptyProducts.jpg?raw=true" width="200" height="400">
+<img src="../images/EmptyCart.jpg?raw=true" width="250" height="400"> <img src="../images/EmptyProducts.jpg?raw=true" width="250" height="400">
 
 ## Building
 
