@@ -4,7 +4,7 @@ Store of mobile phones.
 ## Screenshots
 ![Alt text](../images/Loading.jpg?raw=true)
 
-![Alt text](../images/FilledProducts.jpg?raw=true)
+![Alt text](../images/FilledProducts.jpg?raw=true =200x400)
 
 ![Alt text](../images/Filter.jpg?raw=true)
 
